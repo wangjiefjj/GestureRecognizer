@@ -5,6 +5,7 @@
 #include "Config.h"
 #include "Gesture.h"
 
+//初始化id
 Gesture::Gesture() :
     id(0) {
 }
@@ -34,9 +35,9 @@ void Gesture::addSampledDataToStore(void) {
 
   AccelerationData& sample = sampler.getSample();
   //printf("sampled, x:%6hd, y:%6hd, z:%6hd\n", sample.x, sample.y, sample.z);
+    
 
-#ifdef USE_DATA_QUANTIZER
-
+#ifdef USE_DATA_QUANTIZER   //如果采用的量化则离散、量化
   AccelerationData quantizedData;
   quantizedData.x = dataQuantizer.quantize(sample.x);
   quantizedData.y = dataQuantizer.quantize(sample.y);
@@ -45,7 +46,7 @@ void Gesture::addSampledDataToStore(void) {
 
   accelerationDataStore.add(quantizedData);
 #else
-  sample.scale(100);
+  sample.scale(100);//尺度减小100倍
   //printf("scaled, x:%6hd, y:%6hd, z:%6hd\n", sample.x, sample.y, sample.z);
 
   accelerationDataStore.add(sample);
